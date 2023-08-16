@@ -11,7 +11,7 @@ use Exception;
 class PostController extends Controller
 {
     public function index(){
-        $posts = Post::with('user')->get();
+        $posts = Post::with('user')->where('active','1')->orderBy('id','DESC')->paginate(10);
         return view('home',compact('posts'));
     }
     public function create(){
@@ -33,7 +33,7 @@ class PostController extends Controller
     }
     public function show(){
         $user_id = Auth::guard('web')->user()->id;
-        $posts = Post::where('user_id','=',$user_id)->get();
+        $posts = Post::where('user_id','=',$user_id)->where('active','1')->get();
         return view('User.post_list',compact('posts'));
     }
     public function edit($id){
@@ -70,9 +70,10 @@ class PostController extends Controller
             }else{
                 $post = Post::where('id',$id)->delete();
             }
-            return redirect()->route('post.show')->withSuccess('Post Deleted');
+            return redirect()->back()->withSuccess('Post Deleted');
         }catch(Exception $e){
             return $e;
         }
     }
+    
 }

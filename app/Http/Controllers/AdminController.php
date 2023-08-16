@@ -8,6 +8,8 @@ use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Post;
+use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Exception;
@@ -41,7 +43,7 @@ class AdminController extends Controller
         return view('Admin.dashboard');
     }
     public function userList(){
-        $users = User::all();
+        $users = User::orderBy('id','DESC')->paginate(2);
         return view('Admin.user_list',compact('users'));
     }
     public function edit($id){
@@ -75,6 +77,46 @@ class AdminController extends Controller
             $user->active = $user->active != '1' ? '1' : '0' ;
             $user->save();
             return redirect()->route('users.list')->withSuccess('User Status Updated');
+        }catch(Exception $e){
+            return $e;
+        }
+    }
+    public function userPost($id){
+        $users = User::find($id);
+        $posts = $users->posts()->get();
+        return view('Admin.post_list',compact('posts'));
+    }
+    public function postEdit($id){
+        $post = Post::find($id);
+        return view('Admin.post_edit',compact('post'));
+    }
+    public function postUpdate(PostRequest $request,$id){
+        try{
+            $post = Post::find($id);
+            $post->title = $request->title;
+            $post->description = $request->description;
+            $post->save();
+            return redirect()->back()->withSuccess('Post Updated');
+        }
+        catch(Exception $e){
+            return $e;
+        }
+    }
+    public function postDelete($id){
+        try{
+            $post = Post::find($id);    
+            $post->delete();
+            return redirect()->back()->withSuccess('Post Deleted');
+        }catch(Exception $e){
+            return $e;
+        }
+    }
+    public function postStatus($id){
+        try{
+            $post = Post::find($id);
+            $post->active = $post->active != '1' ? '1' : '0' ;
+            $post->save();
+            return redirect()->back()->withSuccess('Post Status Update');
         }catch(Exception $e){
             return $e;
         }

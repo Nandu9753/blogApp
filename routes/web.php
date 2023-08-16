@@ -62,9 +62,10 @@ Route::get('/admin/user-edit/{id}',[AdminController::class,'edit'])->name('user.
 Route::post('/admin/user-update/{id}',[AdminController::class,'update'])->name('user.update');
 Route::get('/admin/user-delete/{id}',[AdminController::class,'delete'])->name('user.delete');
 Route::get('/admin/user-status/{id}',[AdminController::class,'status'])->name('user.status');
-Route::get('/admin/post-list','PostController@show')->name('admin.post.show');
-Route::get('/admin/edit-post/{id}','PostController@edit')->name('admin.post.edit');
-Route::put('/admin/edit-update/{id}','PostController@update')->name('admin.post.update');
-Route::get('/admin/delete-post/{id}',[PostController::class,'delete'])->name('admin.post.delete');
+Route::get('/admin/user-post/{id}','AdminController@userPost')->name('user.post');
+Route::get('/admin/edit-post/{id}','AdminController@postEdit')->name('admin.post.edit');
+Route::put('/admin/edit-update/{id}','AdminController@postUpdate')->name('admin.post.update');
+Route::get('/admin/delete-post/{id}',[AdminController::class,'postDelete'])->name('admin.post.delete');
+Route::get('/admin/post-status/{id}',[AdminController::class,'postStatus'])->name('post.status');
 
 });

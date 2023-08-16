@@ -18,6 +18,7 @@
       <th scope="col">Email</th>
       <th scope="col">Mobile</th>
       <th scope="col">Status</th>
+      <th scope="col">Post</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
@@ -29,11 +30,13 @@
       <td>{{ $user->email }}</td>
       <td>{{ $user->mobile }}</td>
       <td><a class="btn btn-{{$user->active == 1 ? 'success' : 'danger'}}" href="{{ route('user.status',$user->id) }}" >{{ $user->active == 1 ? 'Active' : 'Inactive' }}</a></td>
+      <td><a class="btn btn-primary btn-xs" href="{{ route('user.post',$user->id) }}" ><i class="fa fa-eye" aria-hidden="true"></i></td>
       <td><a class="btn btn-primary btn-xs" href="{{ route('user.edit',$user->id) }}" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span></a>
       <a class="btn btn-danger btn-xs" href="{{ route('user.delete',$user->id) }}" onclick="return confirm('Are you sure you want to delete this User    ?');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
     </tr>
     @endforeach
   </tbody>
 </table>
+<div class="paginate col-md-12" >{{ $users->links() }}</div>
 </div>
 @endsection
